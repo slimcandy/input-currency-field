@@ -1,0 +1,19 @@
+
+#ignore temprory files
+.cache
+*.log
+*.swp
+.DS_Store
+
+#ignore gitignore
+.gitignore
+
+#ignore build files
+tsconfig.json
+
+#ignore development files
+node_modules/
+.node_modules/
+test.js
+test/
+src/

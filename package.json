@@ -1,12 +1,13 @@
 {
   "name": "input-currency-field",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Boilerplate for currency input field. You might not need react-*-mask lib.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "start": "tsc --watch --preserveWatchOutput",
-    "build": "tsc"
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
   },
   "repository": {
     "type": "git",
