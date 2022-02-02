@@ -1,0 +1,24 @@
+{
+  "name": "input-currency-field",
+  "version": "1.0.0",
+  "description": "Boilerplate for currency input field. You might not need react-*-mask lib.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "start": "tsc --watch --preserveWatchOutput",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slimcandy/input-currency-field.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slimcandy/input-currency-field/issues"
+  },
+  "homepage": "https://github.com/slimcandy/input-currency-field#readme",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
+}
