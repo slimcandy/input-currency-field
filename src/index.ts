@@ -11,7 +11,7 @@ export const sanitizeDecimalSymbol = (
   const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
   // Not the last, not the first, not double decimal symbol
   const firstLastDoubleRegExp = new RegExp(
-    `(${decimalSymbol}{2,}|^${decimalSymbol}|${decimalSymbol}$)`,
+    `(${decimalSymbol}{2,}|^${decimalSymbol})`,
     'g'
   )
   // Only first comma
