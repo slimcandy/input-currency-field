@@ -1,6 +1,6 @@
 {
   "name": "input-currency-field",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Boilerplate for currency input field. You might not need react-*-mask lib.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/slimcandy/input-currency-field.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/slimcandy/input-currency-field/issues"
   },
