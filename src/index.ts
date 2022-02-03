@@ -8,26 +8,29 @@ export const sanitizeDecimalSymbol = (
   decimalSymbol: string = ',',
   allowedDecimalSymbols: string = ','
 ): string => {
-  // Not digit and not decimal symbol
-  const decimalSymbolRegExp = new RegExp(
-    `[^\\d${decimalSymbol}${allowedDecimalSymbols}]`,
+  // Replace all allowed decimal symbols with single one
+  const singleDecimalSymbolRegExp = new RegExp(
+    `[${allowedDecimalSymbols}]`,
     'g'
   )
+  // Not digit and not decimal symbol
+  const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
   // Not the last, not the first, not double decimal symbol
   const firstLastDoubleRegExp = new RegExp(
     `(${decimalSymbol}{2,}|^${decimalSymbol})`,
     'g'
   )
   // Only first comma
-  const singleDecimalSymbolRegExp = new RegExp(
+  const firstDecimalSymbolRegExp = new RegExp(
     `(${decimalSymbol}.*)${decimalSymbol}`,
     'g'
   )
 
   return value
+    .replace(singleDecimalSymbolRegExp, decimalSymbol)
     .replace(decimalSymbolRegExp, '')
     .replace(firstLastDoubleRegExp, '')
-    .replace(singleDecimalSymbolRegExp, '$1')
+    .replace(firstDecimalSymbolRegExp, '$1')
 }
 
 // append
