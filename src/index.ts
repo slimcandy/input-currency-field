@@ -5,8 +5,14 @@
 // leave only one decimal symbol
 export const sanitizeDecimalSymbol = (
   value: string,
-  decimalSymbol: string = ','
+  decimalSymbol: string = ',',
+  allowedDecimalSymbols: string = ','
 ): string => {
+  // Replace all allowed decimal symbols with single one
+  const singleDecimalSymbolRegExp = new RegExp(
+    `[${allowedDecimalSymbols}]`,
+    'g'
+  )
   // Not digit and not decimal symbol
   const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
   // Not the last, not the first, not double decimal symbol
@@ -15,15 +21,16 @@ export const sanitizeDecimalSymbol = (
     'g'
   )
   // Only first comma
-  const singleDecimalSymbolRegExp = new RegExp(
+  const firstDecimalSymbolRegExp = new RegExp(
     `(${decimalSymbol}.*)${decimalSymbol}`,
     'g'
   )
 
   return value
+    .replace(singleDecimalSymbolRegExp, decimalSymbol)
     .replace(decimalSymbolRegExp, '')
     .replace(firstLastDoubleRegExp, '')
-    .replace(singleDecimalSymbolRegExp, '$1')
+    .replace(firstDecimalSymbolRegExp, '$1')
 }
 
 // append
@@ -85,4 +92,12 @@ export const getNextCaretPosition = (
     }
   }
   return rightBoundary
+}
+
+export default {
+  sanitizeDecimalSymbol,
+  addThousandsSeparatorSymbol,
+  addPostfix,
+  getNextCaretPosition,
+  setCaretPosition,
 }

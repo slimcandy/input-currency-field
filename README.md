@@ -24,7 +24,7 @@ const onChangeHandler = (event) => {
     return
   }
   // leave only number and decimal symbol
-  const displayValue = sanitizeDecimalSymbol(value, ',')
+  const displayValue = sanitizeDecimalSymbol(value, ',', '.')
   // '12345' -> '12 345'
   const valueWithThousands = addThousandsSeparatorSymbol(displayValue)
   // append with 🪙
@@ -49,10 +49,10 @@ document.getElementById('currency').addEventListener('input', onChangeHandler)
 
 ## ❕ Many npm libs cannot, but this js could use custom
 
-- decimal symbol
+- decimal symbol (even range of them)
 - postfix
 - thousand separator
-- onChange event whith `displayValue` and real `value` (with dot delimiter for server)
+- onChange event. Use your own! Separating `displayValue` and `value` with no problem
 
 ## ⚠️ Before you copy and paste into prod
 
