@@ -5,10 +5,14 @@
 // leave only one decimal symbol
 export const sanitizeDecimalSymbol = (
   value: string,
-  decimalSymbol: string = ','
+  decimalSymbol: string = ',',
+  allowedDecimalSymbols: string = ','
 ): string => {
   // Not digit and not decimal symbol
-  const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
+  const decimalSymbolRegExp = new RegExp(
+    `[^\\d${decimalSymbol}${allowedDecimalSymbols}]`,
+    'g'
+  )
   // Not the last, not the first, not double decimal symbol
   const firstLastDoubleRegExp = new RegExp(
     `(${decimalSymbol}{2,}|^${decimalSymbol})`,
