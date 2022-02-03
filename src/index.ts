@@ -90,3 +90,11 @@ export const getNextCaretPosition = (
   }
   return rightBoundary
 }
+
+export default {
+  sanitizeDecimalSymbol,
+  addThousandsSeparatorSymbol,
+  addPostfix,
+  getNextCaretPosition,
+  setCaretPosition,
+}
