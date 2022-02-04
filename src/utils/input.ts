@@ -4,7 +4,6 @@ export const getNextCaretPosition = ({
   value = '',
   displayValue = '',
   postfix = '',
-  prefix = '',
   caretPosition = 0,
 }: getNextCaretPositionType): number => {
   if (typeof caretPosition !== 'number') {
@@ -12,10 +11,9 @@ export const getNextCaretPosition = ({
   }
 
   // check boundaries
-  const leftBoundary = prefix.length
   const rightBoundary = displayValue.length - postfix.length
-  if (caretPosition <= leftBoundary) {
-    return leftBoundary
+  if (caretPosition <= 0) {
+    return 0
   }
   if (caretPosition >= rightBoundary) {
     return rightBoundary
@@ -25,8 +23,8 @@ export const getNextCaretPosition = ({
   const nextCaretPosition = caretPosition + valuesDifference
 
   // check boundaries
-  if (nextCaretPosition <= leftBoundary) {
-    return leftBoundary
+  if (nextCaretPosition <= 0) {
+    return 0
   }
   if (nextCaretPosition > rightBoundary) {
     return rightBoundary
