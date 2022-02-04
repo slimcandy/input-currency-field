@@ -1,86 +1,85 @@
-import { setCaretPosition } from './utils/input'
-import { prepend, append } from './utils/string'
+import { getNextCaretPosition, setNextCaretPosition } from './utils/input'
+import {
+  append,
+  sanitizeDecimalSymbol,
+  addThousandsSeparatorSymbol,
+} from './utils/string'
+import { formatConfig } from './types'
 
-/**
- * Build display value
- */
-
-// leave only one decimal symbol
-export const sanitizeDecimalSymbol = (
-  value: string,
-  decimalSymbol: string = ',',
-  allowedDecimalSymbols: string = ','
-): string => {
-  // Replace all allowed decimal symbols with single one
-  const singleDecimalSymbolRegExp = new RegExp(
-    `[${allowedDecimalSymbols}]`,
-    'g'
-  )
-  // Not digit and not decimal symbol
-  const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
-  // Not the last, not the first, not double decimal symbol
-  const firstLastDoubleRegExp = new RegExp(
-    `(${decimalSymbol}{2,}|^${decimalSymbol})`,
-    'g'
-  )
-  // Only first comma
-  const firstDecimalSymbolRegExp = new RegExp(
-    `(${decimalSymbol}.*)${decimalSymbol}`,
-    'g'
-  )
-
-  return value
-    .replace(singleDecimalSymbolRegExp, decimalSymbol)
-    .replace(decimalSymbolRegExp, '')
-    .replace(firstLastDoubleRegExp, '')
-    .replace(firstDecimalSymbolRegExp, '$1')
+export const defaultConfig: formatConfig = {
+  decimalSymbol: ',',
+  allowedDecimalSymbols: ',.',
+  postfix: '',
+  thousandsSeparator: ' ',
 }
 
-// append
-export const addPostfix = (value: string, postfix: string): string =>
-  value.trim().length === 0 ? '' : append(value, postfix)
+export const fillConfig = (
+  config: formatConfig,
+  defaultConfig: formatConfig
+) => {
+  return {
+    decimalSymbol:
+      typeof config.decimalSymbol === 'string'
+        ? config.decimalSymbol
+        : defaultConfig.decimalSymbol,
+    allowedDecimalSymbols:
+      typeof config.allowedDecimalSymbols === 'string'
+        ? config.allowedDecimalSymbols
+        : defaultConfig.allowedDecimalSymbols,
+    postfix:
+      typeof config.postfix === 'string'
+        ? config.postfix
+        : defaultConfig.postfix,
+    thousandsSeparator:
+      typeof config.thousandsSeparator === 'string'
+        ? config.thousandsSeparator
+        : defaultConfig.thousandsSeparator,
+  }
+}
 
-// prepend
-export const addPrefix = (value: string, prefix: string): string =>
-  value.trim().length === 0 ? '' : prepend(value, prefix)
+export const format = (value: string = '', config: formatConfig): string => {
+  if (value.trim() === '' || value === null || value.length < 1) return ''
+  const parsedConfig = fillConfig(config, defaultConfig)
 
-// '12345' -> '12 345'
-export const addThousandsSeparatorSymbol = (
-  value: string,
-  thousandsSeparatorSymbol: string = ' '
-): string =>
-  value.trim().replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparatorSymbol)
+  // '₽ 12w3.45we $' -> '123,45'
+  const displayValue = sanitizeDecimalSymbol(
+    value,
+    parsedConfig.decimalSymbol,
+    parsedConfig.allowedDecimalSymbols
+  )
+  // '12345' -> '12 345'
+  const valueWithThousands = addThousandsSeparatorSymbol(
+    displayValue,
+    parsedConfig.thousandsSeparator
+  )
+  // '123' -> '123 $'
+  const appendedValue = append(valueWithThousands, parsedConfig.postfix)
 
-/**
- * Calculate cursor position
- */
+  return appendedValue
+}
 
-// calculate new cursor position
-export const getNextCaretPosition = (
-  value: string,
-  maskedValue: string,
-  mask: string,
-  caretPosition: number
-): number => {
-  if (caretPosition < 1) {
+export const parse = (displayValue: string, config: formatConfig): number => {
+  if (
+    displayValue.trim() === '' ||
+    displayValue === null ||
+    displayValue.length < 1
+  ) {
     return 0
   }
-  const rightBoundary = maskedValue.length - mask.length
-  if (typeof caretPosition !== 'number') {
-    return rightBoundary
-  }
-  const valuesDifference = maskedValue.length - value.length
-  const nextCaretPosition = caretPosition + valuesDifference
-  if (nextCaretPosition > rightBoundary) {
-    return rightBoundary
-  }
-  return nextCaretPosition
+  const parsedConfig = fillConfig(config, defaultConfig)
+
+  return Number(
+    sanitizeDecimalSymbol(
+      displayValue,
+      parsedConfig.decimalSymbol,
+      parsedConfig.allowedDecimalSymbols
+    ).replace(parsedConfig.decimalSymbol, '.')
+  )
 }
 
 export default {
-  sanitizeDecimalSymbol,
-  addThousandsSeparatorSymbol,
-  addPostfix,
+  format,
+  parse,
   getNextCaretPosition,
-  setCaretPosition: setCaretPosition,
+  setNextCaretPosition,
 }
