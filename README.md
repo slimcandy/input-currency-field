@@ -1,6 +1,8 @@
 # Input currency field
 
-⚡️ [Live demo](https://jsfiddle.net/unjfpq9a/)
+⚡️ [Live demo](https://jsfiddle.net/4ta5Lu8p/)
+
+Helpers for currency input
 
 ## Install
 
@@ -9,39 +11,36 @@
 ## Use
 
 ```js
-import {
-  sanitizeDecimalSymbol,
-  addThousandsSeparatorSymbol,
-  addPostfix,
-  getNextCaretPosition,
-  setCaretPosition,
-} from 'input-currency-field'
-const MASK = ' 🪙'
+import currencyField from 'input-currency-field'
 
 const onChangeHandler = (event) => {
   const value = event.target.value
   if (value === null || value.length < 1) {
     return
   }
-  // leave only number and decimal symbol
-  const displayValue = sanitizeDecimalSymbol(value, ',', '.')
-  // '12345' -> '12 345'
-  const valueWithThousands = addThousandsSeparatorSymbol(displayValue)
-  // append with 🪙
-  const maskedValue = addPostfix(valueWithThousands, MASK)
-
-  // calculate new cursor position
-  const nextCaretPostion = getNextCaretPosition(
+  // fill in config with possible options
+  const config = {
+    decimalSymbol: ',',
+    allowedDecimalSymbols: ',.;',
+    postfix: ' $',
+    thousandsSeparator: ' ',
+  }
+  // apply mask/config to value
+  const displayValue = currencyField.format(value, config)
+  // calculate next caret/cursor position
+  const nextCaretPosition = currencyField.getNextCaretPosition({
     value,
-    maskedValue,
-    MASK,
-    event.target.selectionStart
-  )
+    displayValue,
+    postfix: config.postfix,
+    caretPosition: event.target.selectionStart,
+  })
+  // get math-ready value
+  const mathValue = currencyField.parse(displayValue, config)
 
-  // update value
-  event.target.value = maskedValue
-  // update cursor position
-  setCaretPosition(event.target, nextCaretPostion)
+  // update DOM
+  event.target.value = displayValue
+  currencyField.setNextCaretPosition(event.target, nextCaretPosition)
+  document.getElementById('realValue').value = mathValue
 }
 
 document.getElementById('currency').addEventListener('input', onChangeHandler)
