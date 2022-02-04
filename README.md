@@ -1,6 +1,6 @@
 # Input currency field
 
-⚡️ [Live demo](https://jsfiddle.net/4ta5Lu8p/)
+⚡️ [Live demo](https://jsfiddle.net/6L3cnxrs/)
 
 Helpers for currency input
 
