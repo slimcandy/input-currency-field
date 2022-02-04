@@ -1,7 +1,16 @@
 {
   "name": "input-currency-field",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Boilerplate for currency input field. You might not need react-*-mask lib.",
+  "keywords": [
+    "purejs",
+    "typescript",
+    "currency",
+    "input",
+    "number",
+    "number-format",
+    "mask"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
