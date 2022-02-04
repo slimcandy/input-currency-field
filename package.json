@@ -1,6 +1,6 @@
 {
   "name": "input-currency-field",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Boilerplate for currency input field. You might not need react-*-mask lib.",
   "keywords": [
     "purejs",
