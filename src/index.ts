@@ -1,3 +1,6 @@
+import { setCaretPosition } from './utils/input'
+import { prepend, append } from './utils/string'
+
 /**
  * Build display value
  */
@@ -35,15 +38,11 @@ export const sanitizeDecimalSymbol = (
 
 // append
 export const addPostfix = (value: string, postfix: string): string =>
-  value.trim().length === 0
-    ? ''
-    : value.replace(postfix, '').trim().concat(postfix)
+  value.trim().length === 0 ? '' : append(value, postfix)
 
 // prepend
 export const addPrefix = (value: string, prefix: string): string =>
-  value.trim().length === 0
-    ? ''
-    : prefix.concat(value.replace(prefix, '').trim())
+  value.trim().length === 0 ? '' : prepend(value, prefix)
 
 // '12345' -> '12 345'
 export const addThousandsSeparatorSymbol = (
@@ -56,19 +55,6 @@ export const addThousandsSeparatorSymbol = (
  * Calculate cursor position
  */
 
-// util to set cursor position
-export const setCaretPosition = (
-  element: HTMLInputElement,
-  caretPosition: number
-): void => {
-  if (element !== null || caretPosition > 0) {
-    if (element.setSelectionRange) {
-      element.focus()
-      element.setSelectionRange(caretPosition, caretPosition)
-    }
-  }
-}
-
 // calculate new cursor position
 export const getNextCaretPosition = (
   value: string,
@@ -76,22 +62,19 @@ export const getNextCaretPosition = (
   mask: string,
   caretPosition: number
 ): number => {
-  const rightBoundary = maskedValue.length - mask.length
-  if (typeof caretPosition === 'number') {
-    const valuesDifference = maskedValue.length - value.length
-    if (valuesDifference === 1 && value === maskedValue) {
-      return caretPosition
-    }
-    const nextCaretPosition = caretPosition + valuesDifference
-    if (caretPosition < 1) {
-      return 0
-    } else {
-      return nextCaretPosition > rightBoundary
-        ? rightBoundary
-        : nextCaretPosition
-    }
+  if (caretPosition < 1) {
+    return 0
   }
-  return rightBoundary
+  const rightBoundary = maskedValue.length - mask.length
+  if (typeof caretPosition !== 'number') {
+    return rightBoundary
+  }
+  const valuesDifference = maskedValue.length - value.length
+  const nextCaretPosition = caretPosition + valuesDifference
+  if (nextCaretPosition > rightBoundary) {
+    return rightBoundary
+  }
+  return nextCaretPosition
 }
 
 export default {
@@ -99,5 +82,5 @@ export default {
   addThousandsSeparatorSymbol,
   addPostfix,
   getNextCaretPosition,
-  setCaretPosition,
+  setCaretPosition: setCaretPosition,
 }

@@ -57,7 +57,6 @@ document.getElementById('currency').addEventListener('input', onChangeHandler)
 ## ⚠️ Before you copy and paste into prod
 
 - `onChangeHandler` should be debounced or throttled
-- `element.setSelectionRange` is tricky and not completed yet. Test with ultra-speed typing
 
 ## 📚 MDN
 
