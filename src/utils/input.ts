@@ -1,8 +1,8 @@
 import { getNextCaretPositionType } from './input-types'
 // calculate new cursor position
 export const getNextCaretPosition = ({
-  value = '',
-  displayValue = '',
+  prevDisplayValue = '',
+  nextDisplayValue = '',
   postfix = '',
   caretPosition = 0,
 }: getNextCaretPositionType): number => {
@@ -10,26 +10,17 @@ export const getNextCaretPosition = ({
     throw Error('Cannot get caret position')
   }
 
-  // check boundaries
-  const rightBoundary = displayValue.length - postfix.length
-  if (caretPosition <= 0) {
-    return 0
-  }
-  if (caretPosition >= rightBoundary) {
-    return rightBoundary
-  }
-
-  const valuesDifference = displayValue.length - value.length
+  const valuesDifference = nextDisplayValue.length - prevDisplayValue.length
   const nextCaretPosition = caretPosition + valuesDifference
 
   // check boundaries
+  const rightBoundary = nextDisplayValue.length - postfix.length
   if (nextCaretPosition <= 0) {
     return 0
   }
   if (nextCaretPosition > rightBoundary) {
     return rightBoundary
   }
-
   return nextCaretPosition
 }
 

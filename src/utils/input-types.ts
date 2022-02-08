@@ -1,6 +1,6 @@
 export type getNextCaretPositionType = {
-  value?: string
-  displayValue?: string
+  prevDisplayValue?: string
+  nextDisplayValue?: string
   postfix?: string
   caretPosition?: number
 }

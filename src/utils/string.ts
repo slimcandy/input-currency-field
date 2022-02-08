@@ -16,6 +16,13 @@ export const sanitizeDecimalSymbol = (
 ): string => {
   // Not digit and not decimal symbol
   const decimalSymbolRegExp = new RegExp(`[^\\d${decimalSymbol}]`, 'g')
+  // leave only first zero
+  const onlyOneLeadingZeroRegExp = new RegExp('^0+', 'g')
+  // 03 -> 3
+  const noLeadingZeroRegExp = new RegExp(
+    `^0([\\d${allowedDecimalSymbols}]+)`,
+    'g'
+  )
   // Not the last, not the first, not double decimal symbol
   const firstLastDoubleRegExp = new RegExp(
     `(${decimalSymbol}{2,}|^${decimalSymbol})`,
@@ -26,8 +33,9 @@ export const sanitizeDecimalSymbol = (
     `(${decimalSymbol}.*)${decimalSymbol}`,
     'g'
   )
-
   return getSingleDecimalSymbol(value, decimalSymbol, allowedDecimalSymbols)
+    .replace(onlyOneLeadingZeroRegExp, '0')
+    .replace(noLeadingZeroRegExp, '$1')
     .replace(decimalSymbolRegExp, '')
     .replace(firstLastDoubleRegExp, '')
     .replace(firstDecimalSymbolRegExp, '$1')
